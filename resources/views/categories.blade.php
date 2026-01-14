@@ -260,7 +260,7 @@
     }
 </style>
 
-@extends('layout.master')
+@extends('layouts.master')
 
 @section('content')
     <div class="product-section mt-150 mb-150">

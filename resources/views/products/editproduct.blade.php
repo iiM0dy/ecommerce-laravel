@@ -95,7 +95,7 @@
         }
     }
 </style>
-@extends('layout.master')
+@extends('layouts.master')
 
 @section('content')
     <div class="contact-wrapper">

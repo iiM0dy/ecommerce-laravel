@@ -132,7 +132,7 @@
     }
 </style>
 
-@extends('layout.master')
+@extends('layouts.master')
 @section('content')
     <div class="cart-section mt-150 mb-150">
         <div class="container">
