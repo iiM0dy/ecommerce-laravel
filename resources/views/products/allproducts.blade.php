@@ -209,7 +209,9 @@
                         <div class="single-product-item">
 
                             <div class="product-image-wrapper">
-                                <img src="{{ asset($product->imagepath) }}" alt="{{ $product->name }}">
+                                <a href="/singleproduct/{{ $product->id }}"><img src="{{ asset($product->imagepath) }}"
+                                        alt="{{ $product->name }}"></a>
+
                             </div>
 
                             <div class="product-details">

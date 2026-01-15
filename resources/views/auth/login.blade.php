@@ -91,7 +91,7 @@
         text-decoration: none;
     }
 </style>
-@extends('layout.master')
+@extends('layouts.master')
 
 @section('content')
     <div class="auth-wrapper">

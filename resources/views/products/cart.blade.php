@@ -35,7 +35,7 @@
         object-fit: cover;
     }
 
-    .product-name {
+    .product-name>a {
         font-weight: 600;
         color: #333;
     }
@@ -166,7 +166,7 @@
                                         </td>
 
                                         <td class="product-name">
-                                            {{ $item->product->name }}
+                                            <a href="/singleproduct/{{ $item->product->id }}">{{ $item->product->name }}</a>
                                         </td>
 
                                         <td class="product-price">
