@@ -20,6 +20,7 @@ $this->call([
     UsersTableSeeder::class,
     CategoriesTableSeeder::class,
     ProductsTableSeeder::class,
+    ProductPhotosTableSeeder::class,
     ReviewsTableSeeder::class,
     CartsTableSeeder::class,
 ]);

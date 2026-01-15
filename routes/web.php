@@ -1,11 +1,11 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductPhoto;
 use App\Models\Review;
-use App\Models\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -191,7 +191,7 @@ Route::post('/storeproductphoto', function (Request $request) {
         'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
     ]);
 
-    $newProductPhoto = new ProductPhoto();
+    $newProductPhoto = new ProductPhoto;
 
     $newProductPhoto->product_id = $request->product_id;
     if ($request->has('image')) {
@@ -205,30 +205,36 @@ Route::post('/storeproductphoto', function (Request $request) {
     return redirect('/productstable');
 });
 
-Route::get('/singleproduct/{productId?}',function($productId){
-    $product = Product::find($productId);
-    $category = Category::find($product->category_id);
-    return view('products.singleproduct',['product'=>$product,'category'=>$category]);
+Route::get('/singleproduct/{productId}', function ($productId) {
+$product = Product::with(['category', 'productPhotos'])->findOrFail($productId);
+
+
+    $relatedProducts = Product::where('category_id', $product->category_id)
+        ->where('id', '!=', $productId)
+        ->inRandomOrder()
+        ->limit(3)
+        ->get();
+// dd($relatedProducts);
+
+    return view('products.singleproduct', compact('product', 'relatedProducts'));
 });
-Route::post('/singleproducttocart',function(Request $request){
+
+Route::post('/singleproducttocart', function (Request $request) {
     $request->validate([
-    'product_id' => 'required',
-    'quantity' => 'required|integer|min:1',
-]);
+        'product_id' => 'required',
+        'quantity' => 'required|integer|min:1',
+    ]);
 
     $user_id = auth()->user()->id;
 
-    $cartItem = new Cart();
-    $cartItem -> user_id = $user_id;
-    $cartItem -> quantity = $request -> quantity;
-    $cartItem -> product_id = $request -> product_id;
+    $cartItem = new Cart;
+    $cartItem->user_id = $user_id;
+    $cartItem->quantity = $request->quantity;
+    $cartItem->product_id = $request->product_id;
 
     $cartItem->save();
 
     return redirect('/singleproduct/'.$request->product_id);
 });
-
-
-
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
