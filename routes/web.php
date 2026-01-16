@@ -6,6 +6,8 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductPhoto;
 use App\Models\Review;
+use App\Models\Order;
+use App\Models\OrderDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -206,15 +208,14 @@ Route::post('/storeproductphoto', function (Request $request) {
 });
 
 Route::get('/singleproduct/{productId}', function ($productId) {
-$product = Product::with(['category', 'productPhotos'])->findOrFail($productId);
-
+    $product = Product::with(['category', 'productPhotos'])->findOrFail($productId);
 
     $relatedProducts = Product::where('category_id', $product->category_id)
         ->where('id', '!=', $productId)
         ->inRandomOrder()
         ->limit(3)
         ->get();
-// dd($relatedProducts);
+    // dd($relatedProducts);
 
     return view('products.singleproduct', compact('product', 'relatedProducts'));
 });
@@ -235,6 +236,51 @@ Route::post('/singleproducttocart', function (Request $request) {
     $cartItem->save();
 
     return redirect('/singleproduct/'.$request->product_id);
+});
+
+Route::get('/checkout', function () {
+    $user_id = auth()->user()->id;
+    $cartProducts = Cart::where('user_id', $user_id)->get();
+    $cartItems = Cart::with('product')->where('user_id', auth()->id())->get();
+    $totalPrice = $cartProducts->sum(function ($item) {
+        return $item->product->price * $item->quantity;
+    });
+
+    return view('products.checkout', compact('cartProducts','totalPrice','cartItems'));
+});
+Route::post('/storeorder', function(Request $request){
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'address' => 'required|string|max:500',
+        'phone' => 'required|string|max:20',
+        'note' => 'nullable|string',
+    ]);
+    $user_id = auth()->user()->id;
+
+    $order = new Order();
+    $order->name = $request->name;
+    $order->email = $request->email;
+    $order->address = $request->address;
+    $order->phone = $request->phone;
+    $order->note = $request->note;
+    $order->user_id = $user_id;
+    $order->save();
+
+    $cartItems = Cart::with('product')->where('user_id', auth()->id())->get();
+
+    foreach ($cartItems as $item) {
+        $newOrderDetail = new OrderDetails();
+        $newOrderDetail-> product_id = $item -> product_id;
+        $newOrderDetail -> price = $item->product->price;
+        $newOrderDetail ->quantity = $item->quantity;
+        $newOrderDetail ->order_id = $order->id;
+        $newOrderDetail->save();
+    }
+
+    Cart::where('user_id',$user_id)->delete();
+
+    return redirect()->back()->with('success', 'Your order has been placed successfully!');
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
