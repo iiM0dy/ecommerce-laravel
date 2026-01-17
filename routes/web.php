@@ -64,9 +64,9 @@ Route::post('/storeproduct', function (Request $request) {
 
     if ($request->hasFile('image')) {
         $image = $request->file('image');
-        $filename = time().'.'.$image->getClientOriginalExtension();
+        $filename = time() . '.' . $image->getClientOriginalExtension();
         $image->move(public_path('assets/img/'), $filename);
-        $product->imagepath = 'assets/img/'.$filename;
+        $product->imagepath = 'assets/img/' . $filename;
     }
 
     $product->save();
@@ -116,10 +116,10 @@ Route::post('/updateproduct', function (Request $request) {
 
         // Save new image
         $image = $request->file('image');
-        $filename = time().'.'.$image->getClientOriginalExtension();
+        $filename = time() . '.' . $image->getClientOriginalExtension();
         $image->move(public_path('assets/img/'), $filename);
 
-        $product->imagepath = 'assets/img/'.$filename;
+        $product->imagepath = 'assets/img/' . $filename;
     }
 
     $product->save();
@@ -198,9 +198,9 @@ Route::post('/storeproductphoto', function (Request $request) {
     $newProductPhoto->product_id = $request->product_id;
     if ($request->has('image')) {
         $image = $request->file('image');
-        $filename = time().'.'.$image->getClientOriginalExtension();
+        $filename = time() . '.' . $image->getClientOriginalExtension();
         $image->move(public_path('assets/img/'), $filename);
-        $newProductPhoto->photo_path = 'assets/img/'.$filename;
+        $newProductPhoto->photo_path = 'assets/img/' . $filename;
     }
     $newProductPhoto->save();
 
@@ -235,7 +235,7 @@ Route::post('/singleproducttocart', function (Request $request) {
 
     $cartItem->save();
 
-    return redirect('/singleproduct/'.$request->product_id);
+    return redirect('/singleproduct/' . $request->product_id);
 });
 
 Route::get('/checkout', function () {
@@ -246,9 +246,9 @@ Route::get('/checkout', function () {
         return $item->product->price * $item->quantity;
     });
 
-    return view('products.checkout', compact('cartProducts','totalPrice','cartItems'));
+    return view('products.checkout', compact('cartProducts', 'totalPrice', 'cartItems'));
 });
-Route::post('/storeorder', function(Request $request){
+Route::post('/storeorder', function (Request $request) {
     $request->validate([
         'name' => 'required|string|max:255',
         'email' => 'required|email|max:255',
@@ -271,16 +271,27 @@ Route::post('/storeorder', function(Request $request){
 
     foreach ($cartItems as $item) {
         $newOrderDetail = new OrderDetails();
-        $newOrderDetail-> product_id = $item -> product_id;
-        $newOrderDetail -> price = $item->product->price;
-        $newOrderDetail ->quantity = $item->quantity;
-        $newOrderDetail ->order_id = $order->id;
+        $newOrderDetail->product_id = $item->product_id;
+        $newOrderDetail->price = $item->product->price;
+        $newOrderDetail->quantity = $item->quantity;
+        $newOrderDetail->order_id = $order->id;
         $newOrderDetail->save();
     }
 
-    Cart::where('user_id',$user_id)->delete();
+    Cart::where('user_id', $user_id)->delete();
 
     return redirect()->back()->with('success', 'Your order has been placed successfully!');
+});
+
+Route::get('/previousorders', function () {
+    $user = auth()->user();
+    $cartItems = Cart::with('product')->where('user_id', $user)->get();
+    $cartProducts = Cart::where('user_id', $user)->get();
+    $orders = Order::with('orderDetails')->get();
+    $totalPrice = $cartProducts->sum(function ($item) {
+        return $item->product->price * $item->quantity;
+    });
+    return view('products.previousorders', compact('orders', 'cartItems', 'cartProducts', 'totalPrice'));
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

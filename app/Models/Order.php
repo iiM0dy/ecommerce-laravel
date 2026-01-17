@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-        protected $fillable = [
+    protected $fillable = [
         'name',
         'email',
         'address',
@@ -14,4 +14,14 @@ class Order extends Model
         'note',
         'total',
     ];
+
+    public function orderDetails()
+    {
+        return $this->hasMany(OrderDetails::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
