@@ -97,15 +97,16 @@
     <div class="auth-wrapper">
         <div class="auth-card">
 
-            <h2>Create Account</h2>
-            <p class="auth-subtitle">Join us and start shopping</p>
+            <h2>{{ __('messages.create_account') }}</h2>
+            <p class="auth-subtitle">{{ __('messages.join_us') }}</p>
 
             <form method="POST" action="{{ route('register') }}">
                 @csrf
 
                 <!-- Name -->
                 <div class="auth-group">
-                    <input type="text" name="name" placeholder="Full name" value="{{ old('name') }}" required autofocus>
+                    <input type="text" name="name" placeholder="{{ __('messages.full_name') }}" value="{{ old('name') }}"
+                        required autofocus>
                     @error('name')
                         <small class="auth-error">{{ $message }}</small>
                     @enderror
@@ -113,7 +114,8 @@
 
                 <!-- Email -->
                 <div class="auth-group">
-                    <input type="email" name="email" placeholder="Email address" value="{{ old('email') }}" required>
+                    <input type="email" name="email" placeholder="{{ __('messages.email') }}" value="{{ old('email') }}"
+                        required>
                     @error('email')
                         <small class="auth-error">{{ $message }}</small>
                     @enderror
@@ -121,7 +123,7 @@
 
                 <!-- Password -->
                 <div class="auth-group">
-                    <input type="password" name="password" placeholder="Password" required>
+                    <input type="password" name="password" placeholder="{{ __('messages.password') }}" required>
                     @error('password')
                         <small class="auth-error">{{ $message }}</small>
                     @enderror
@@ -129,18 +131,19 @@
 
                 <!-- Confirm Password -->
                 <div class="auth-group">
-                    <input type="password" name="password_confirmation" placeholder="Confirm password" required>
+                    <input type="password" name="password_confirmation" placeholder="{{ __('messages.confirm_password') }}"
+                        required>
                 </div>
 
                 <!-- Button -->
                 <button type="submit" class="auth-btn">
-                    Create Account
+                    {{ __('messages.create_account') }}
                 </button>
 
                 <!-- Login link -->
                 <p class="auth-footer">
-                    Already have an account?
-                    <a href="{{ route('login') }}">Login</a>
+                    {{ __('messages.already_have_account') }}
+                    <a href="{{ route('login') }}">{{ __('messages.login') }}</a>
                 </p>
 
             </form>

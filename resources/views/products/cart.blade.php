@@ -145,11 +145,11 @@
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th>Product</th>
-                                    <th>Name</th>
-                                    <th>Price</th>
-                                    <th>Qty</th>
-                                    <th>Total</th>
+                                    <th>{{ __('messages.product') }}</th>
+                                    <th>{{ __('messages.name') }}</th>
+                                    <th>{{ __('messages.price') }}</th>
+                                    <th>{{ __('messages.qty') }}</th>
+                                    <th>{{ __('messages.total') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -166,7 +166,8 @@
                                         </td>
 
                                         <td class="product-name">
-                                            <a href="/singleproduct/{{ $item->product->id }}">{{ $item->product->name }}</a>
+                                            <a
+                                                href="/singleproduct/{{ $item->product->id }}">{{ session('locale') == 'ar' ? $item->product->name : $item->product->name_en }}</a>
                                         </td>
 
                                         <td class="product-price">
@@ -204,24 +205,24 @@
                 <div class="col-lg-4">
                     <div class="total-box">
                         <div class="total-row">
-                            <span>Subtotal</span>
+                            <span>{{ __('messages.subtotal') }}</span>
                             <span>${{ number_format($total, 2) }}</span>
                         </div>
 
                         <div class="total-row">
-                            <span>Shipping</span>
-                            <span>Free</span>
+                            <span>{{ __('messages.shipping') }}</span>
+                            <span>{{ __('messages.free') }}</span>
                         </div>
 
                         <hr>
 
                         <div class="total-row">
-                            <strong>Total</strong>
+                            <strong>{{ __('messages.total') }}</strong>
                             <strong>${{ number_format($total, 2) }}</strong>
                         </div>
 
                         <a href="/checkout" class="checkout-btn">
-                            Proceed to Checkout
+                            {{ __('messages.proceed_to_checkout') }}
                         </a>
                     </div>
                 </div>

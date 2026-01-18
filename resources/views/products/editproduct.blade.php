@@ -100,35 +100,39 @@
 @section('content')
     <div class="contact-wrapper">
 
-        <h2 class="form-title">Add New Product</h2>
+        <h2 class="form-title">{{ __('messages.edit_product') }}</h2>
 
         <form class="contact-form" method="POST" enctype="multipart/form-data" action="{{ url('/updateproduct') }}">
             @csrf
 
             <div class="form-row">
                 <input type="hidden" name="productid" value="{{ $product->id }}">
-                <input type="text" value="{{ $product->name }}" name="name" placeholder="Product Title">
-                <input type="number" value="{{ $product->price }}" name="price" placeholder="Price">
-                <input type="number" value="{{ $product->quantity }}" name="quantity" placeholder="Quantity">
+                <input type="text" value="{{ session('locale') == 'ar' ? $product->name : $product->name_en }}" name="name"
+                    placeholder="{{ __('messages.product_title') }}">
+                <input type="number" value="{{ $product->price }}" name="price" placeholder="{{ __('messages.price') }}">
+                <input type="number" value="{{ $product->quantity }}" name="quantity"
+                    placeholder="{{ __('messages.quantity') }}">
             </div>
 
             <div class="form-row full">
-                <textarea name="description" placeholder="Product Description">{{ $product->description }}</textarea>
+                <textarea name="description"
+                    placeholder="{{ __('messages.product_description') }}">{{ session('locale') == 'ar' ? $product->description : $product->description_en }}</textarea>
             </div>
 
             <div class="form-row full">
                 <select name="category_id">
-                    <option disabled selected>Select Category</option>
+                    <option disabled selected>{{ __('messages.select_category') }}</option>
                     @foreach ($categories as $category)
                         <option {{ $product->category_id == $category->id ? 'selected' : '' }} value="{{ $category->id }}">
-                            {{ $category->name }}</option>
+                            {{ session('locale') == 'ar' ? $category->name : $category->name_en }}
+                        </option>
                     @endforeach
                 </select>
             </div>
 
             {{-- Current image preview --}}
             <div class="form-row full">
-                <label>Current Image</label>
+                <label>{{ __('messages.current_image') }}</label>
                 <img src="{{ asset($product->imagepath) }}"
                     style="width:120px;height:120px;object-fit:cover;border-radius:12px;">
             </div>
@@ -137,11 +141,11 @@
             <div class="form-row full">
                 <input type="file" name="image">
 
-                <small style="color:#888">Leave empty if you don’t want to change the image</small>
+                <small style="color:#888">{{ __('messages.leave_empty_image') }}</small>
             </div>
 
             <div class="form-actions">
-                <button type="submit">Edit Product</button>
+                <button type="submit">{{ __('messages.edit_product') }}</button>
             </div>
 
         </form>

@@ -232,7 +232,6 @@
         transform: translateY(0);
         box-shadow: 0 4px 12px rgba(242, 129, 35, 0.3);
     }
-
 </style>
 
 @extends('layouts.master')
@@ -248,7 +247,7 @@
                                     <h5 class="mb-0">
                                         <button class="btn btn-link" type="button" data-toggle="collapse"
                                             data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                            Billing Address
+                                            {{ __('messages.billing_address') }}
                                         </button>
                                     </h5>
                                 </div>
@@ -258,13 +257,20 @@
                                     <div class="card-body">
                                         <div class="billing-address-form">
                                             <form action="/storeorder" method="POST" id="store-order" name="store-order">
-												@csrf
-                                                <p><input type="text" required name="name" id="name" placeholder="Name"></p>
-                                                <p><input type="email" required name="email" id="email" placeholder="Email"></p>
-                                                <p><input type="text" required name="address" id="address" placeholder="Address"></p>
-                                                <p><input type="tel" required name="phone" id="phone" placeholder="Phone"></p>
+                                                @csrf
+                                                <p><input type="text" required name="name" id="name"
+                                                        placeholder="{{ __('messages.name') }}"></p>
+                                                <p><input type="email" required name="email" id="email"
+                                                        placeholder="{{ __('messages.email') }}">
+                                                </p>
+                                                <p><input type="text" required name="address" id="address"
+                                                        placeholder="{{ __('messages.address') }}"></p>
+                                                <p><input type="tel" required name="phone" id="phone"
+                                                        placeholder="{{ __('messages.phone') }}">
+                                                </p>
                                                 <p>
-                                                    <textarea name="note" id="note" cols="30" rows="10" placeholder="Say Something"></textarea>
+                                                    <textarea name="note" id="note" cols="30" rows="10"
+                                                        placeholder="{{ __('messages.say_something') }}"></textarea>
                                                 </p>
                                             </form>
                                         </div>
@@ -276,7 +282,7 @@
                                     <h5 class="mb-0">
                                         <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
                                             data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                            Shipping Address
+                                            {{ __('messages.shipping_address') }}
                                         </button>
                                     </h5>
                                 </div>
@@ -284,7 +290,7 @@
                                     data-parent="#accordionExample">
                                     <div class="card-body">
                                         <div class="shipping-address-form">
-                                            <p>Your shipping address form is here.</p>
+                                            <p>{{ __('messages.shipping_address_form') }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -295,7 +301,7 @@
                                         <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
                                             data-target="#collapseThree" aria-expanded="false"
                                             aria-controls="collapseThree">
-                                            Cart Details
+                                            {{ __('messages.cart_details') }}
                                         </button>
                                     </h5>
                                 </div>
@@ -305,52 +311,51 @@
                                         <div class="card-details">
                                             <div class="cart-card">
                                                 <table class="cart-table">
-                                                        <thead>
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>{{ __('messages.product') }}</th>
+                                                            <th>{{ __('messages.name') }}</th>
+                                                            <th>{{ __('messages.price') }}</th>
+                                                            <th>{{ __('messages.quantity') }}</th>
+                                                            <th>{{ __('messages.total') }}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($cartItems as $item)
                                                             <tr>
-                                                                <th></th>
-                                                                <th>Product</th>
-                                                                <th>Name</th>
-                                                                <th>Price</th>
-                                                                <th>Qty</th>
-                                                                <th>Total</th>
+                                                                <td>
+
+                                                                </td>
+
+                                                                <td>
+                                                                    <img src="{{ asset($item->product->imagepath) }}">
+                                                                </td>
+
+                                                                <td class="product-name">
+                                                                    <a href="/singleproduct/{{ $item->product->id }}">{{ session('locale') == 'ar' ? $item->product->name : $item->product->name_en }}
+                                                                    </a>
+                                                                </td>
+
+                                                                <td class="product-price">
+                                                                    ${{ number_format($item->product->price, 2) }}
+                                                                </td>
+
+                                                                <td>
+                                                                    <div class="qty-control">
+
+                                                                        <span class="qty-number">{{ $item->quantity }}</span>
+                                                                    </div>
+                                                                </td>
+
+
+                                                                <td class="product-total">
+                                                                    ${{ number_format($item->product->price * $item->quantity, 2) }}
+                                                                </td>
                                                             </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @foreach ($cartItems as $item)
-                                                                <tr>
-                                                                    <td>
-
-                                                                    </td>
-
-                                                                    <td>
-                                                                        <img src="{{ asset($item->product->imagepath) }}">
-                                                                    </td>
-
-                                                                    <td class="product-name">
-                                                                        <a
-                                                                            href="/singleproduct/{{ $item->product->id }}">{{ $item->product->name }}</a>
-                                                                    </td>
-
-                                                                    <td class="product-price">
-                                                                        ${{ number_format($item->product->price, 2) }}
-                                                                    </td>
-
-                                                                    <td>
-                                                                        <div class="qty-control">
-
-                                                                            <span
-                                                                                class="qty-number">{{ $item->quantity }}</span>
-                                                                        </div>
-                                                                    </td>
-
-
-                                                                    <td class="product-total">
-                                                                        ${{ number_format($item->product->price * $item->quantity, 2) }}
-                                                                    </td>
-                                                                </tr>
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -366,14 +371,14 @@
                         <table class="order-details">
                             <thead>
                                 <tr>
-                                    <th>Your order Details</th>
-                                    <th>Price</th>
+                                    <th>{{ __('messages.order_details') }}</th>
+                                    <th>{{ __('messages.price') }}</th>
                                 </tr>
                             </thead>
                             <tbody class="order-details-body">
                                 <tr>
-                                    <td>Product</td>
-                                    <td>Total</td>
+                                    <td>{{ __('messages.product') }}</td>
+                                    <td>{{ __('messages.total') }}</td>
                                 </tr>
                                 @foreach ($cartProducts as $item)
                                     <tr>
@@ -384,12 +389,13 @@
                             </tbody>
                             <tbody class="checkout-details">
                                 <tr>
-                                    <td>Total</td>
+                                    <td>{{ __('messages.total') }}</td>
                                     <td>${{ $totalPrice }}</td>
                                 </tr>
                             </tbody>
                         </table>
-                        <a href="#" onclick="event.preventDefault(); document.getElementById('store-order').submit();" class="boxed-btn">Place Order</a>
+                        <a href="#" onclick="event.preventDefault(); document.getElementById('store-order').submit();"
+                            class="boxed-btn">{{ __('messages.place_order') }}</a>
                     </div>
                 </div>
             </div>

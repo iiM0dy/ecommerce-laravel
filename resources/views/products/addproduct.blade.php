@@ -100,24 +100,24 @@
 @section('content')
     <div class="contact-wrapper">
 
-        <h2 class="form-title">Add New Product</h2>
+        <h2 class="form-title">{{ __('messages.add_product') }}</h2>
 
         <form class="contact-form" method="POST" enctype="multipart/form-data" action="{{ url('/storeproduct') }}">
             @csrf
 
             <div class="form-row">
-                <input type="text" name="name" placeholder="Product Title">
-                <input type="number" name="price" placeholder="Price">
-                <input type="number" name="quantity" placeholder="Quantity">
+                <input type="text" name="name" placeholder="{{ __('messages.name') }}">
+                <input type="number" name="price" placeholder="{{ __('messages.price') }}">
+                <input type="number" name="quantity" placeholder="{{ __('messages.quantity') }}">
             </div>
 
             <div class="form-row full">
-                <textarea name="description" placeholder="Product Description"></textarea>
+                <textarea name="description" placeholder="{{ __('messages.description') }}"></textarea>
             </div>
 
             <div class="form-row full">
                 <select name="category_id">
-                    <option disabled selected>Select Category</option>
+                    <option disabled selected>{{ __('messages.select_category') }}</option>
                     @foreach ($categories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach
@@ -127,11 +127,11 @@
             <div class="form-row full">
                 <input type="file" name="image">
 
-                <small style="color:#888">Leave empty if you don’t want to change the image</small>
+                <small style="color:#888">{{ __('messages.leave_empty_if_you_dont_want_to_change_the_image') }}</small>
             </div>
 
             <div class="form-actions">
-                <button type="submit">Add Product</button>
+                <button type="submit">{{ __('messages.add_product') }}</button>
             </div>
 
         </form>

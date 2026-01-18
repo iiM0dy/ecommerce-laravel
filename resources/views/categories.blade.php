@@ -269,8 +269,8 @@
             <div class="row">
                 <div class="col-lg-8 offset-lg-2 text-center">
                     <div class="section-title">
-                        <h3><span class="orange-text">Our</span> Products</h3>
-                        <p>Fresh products, directly from farm to your table</p>
+                        <h3><span class="orange-text">{{ __('messages.our_products') }}</span></h3>
+                        <p>{{ __('messages.fresh_products') }}</p>
                     </div>
                 </div>
             </div>
@@ -279,9 +279,10 @@
             <div class="row mb-4">
                 <div class="col-md-12 text-center">
                     <ul class="product-filters">
-                        <li class="active" data-filter="*">All</li>
+                        <li class="active" data-filter="*">{{ __('messages.all') }}</li>
                         @foreach ($categories as $category)
-                            <li data-filter=".category-{{ $category->id }}">{{ $category->name }}</li>
+                            <li data-filter=".category-{{ $category->id }}">
+                                {{ session('locale') == 'ar' ? $category->name : $category->name_en }}</li>
                         @endforeach
                     </ul>
                 </div>
@@ -305,11 +306,11 @@
 
                                 <div class="product-meta">
                                     <span class="product-price">${{ $product->price }}</span>
-                                    <span class="product-qty">{{ $product->quantity }} in stock</span>
+                                    <span class="product-qty">{{ $product->quantity }} {{ __('messages.in_stock') }}</span>
                                 </div>
 
                                 <a href="cart.html" class="cart-btn">
-                                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                                    <i class="fas fa-shopping-cart"></i> {{ __('messages.add_to_cart') }}
                                 </a>
                             </div>
 
@@ -330,15 +331,15 @@
 {{-- pages --}}
 
 {{-- <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="pagination-wrap">
-                        <ul>
-                            <li><a href="#">Prev</a></li>
-                            <li><a href="#">1</a></li>
-                            <li><a class="active" href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">Next</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div> --}}
+    <div class="col-lg-12 text-center">
+        <div class="pagination-wrap">
+            <ul>
+                <li><a href="#">Prev</a></li>
+                <li><a href="#">1</a></li>
+                <li><a class="active" href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">Next</a></li>
+            </ul>
+        </div>
+    </div>
+</div> --}}

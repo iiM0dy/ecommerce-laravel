@@ -202,16 +202,18 @@
 
             <!-- LEFT : SLIDER -->
             <div class="product-images">
-                <img src="{{ asset($product->imagepath) }}" alt="{{ $product->name }}">
+                <img src="{{ asset($product->imagepath) }}"
+                    alt="{{ session('locale') == 'ar' ? $product->name : $product->name_en }}">
             </div>
 
             <!-- RIGHT : INFO -->
             <div class="product-details">
-                <h1>{{ $product->name }}</h1>
+                <h1>{{ session('locale') == 'ar' ? $product->name : $product->name_en }}</h1>
 
                 <span class="price">${{ $product->price }}</span>
 
-                <p class="description">{{ $product->description }}</p>
+                <p class="description">{{ session('locale') == 'ar' ? $product->description : $product->description_en }}
+                </p>
 
                 <form method="POST" action="/singleproducttocart">
                     @csrf
@@ -221,14 +223,15 @@
                         <input type="number" name="quantity" value="1" min="1">
                         <button type="submit">
                             <i class="fas fa-cart-plus"></i>
-                            Add to cart
+                            {{ __('messages.add_to_cart') }}
                         </button>
                     </div>
                 </form>
 
                 <div class="meta">
-                    Category: <strong>{{ $product->category->name }}</strong> <br>
-                    Stock: {{ $product->quantity }}
+                    {{ __('messages.category') }}:
+                    <strong>{{ session('locale') == 'ar' ? $product->category->name : $product->category->name_en }}</strong><br>
+                    {{ __('messages.stock') }}: {{ $product->quantity }}
                 </div>
             </div>
 
@@ -236,32 +239,34 @@
 
         <!-- PRODUCT IMAGES -->
         <section class="product-images-section">
-            <h2>Product Images</h2>
+            <h2>{{ __('messages.product_images') }}</h2>
             @if ($product->productPhotos->count() > 0)
                 <div class="images-grid">
 
                     @foreach ($product->productPhotos as $photo)
                         <div class="image-card">
-                            <img src="{{ asset($photo->photo_path) }}" alt="{{ $product->name }}">
+                            <img src="{{ asset($photo->photo_path) }}"
+                                alt="{{ session('locale') == 'ar' ? $product->name : $product->name_en }}">
                         </div>
                     @endforeach
                 </div>
             @else
-                <p class="no-images">No additional images available.</p>
+                <p class="no-images">{{ __('messages.no_additional_images') }}</p>
             @endif
         </section>
 
         <!-- RELATED PRODUCTS -->
         <section class="related-products">
-            <h2>You may also like</h2>
+            <h2>{{ __('messages.you_may_also_like') }}</h2>
 
             <div class="related-list">
                 @foreach ($relatedProducts as $item)
                     <a href="/singleproduct/{{ $item->id }}" class="related-item">
-                        <img src="{{ asset($item->imagepath) }}" alt="{{ $item->name }}">
+                        <img src="{{ asset($item->imagepath) }}"
+                            alt="{{ session('locale') == 'ar' ? $item->name : $item->name_en }}">
 
                         <div class="info">
-                            <h3>{{ $item->name }}</h3>
+                            <h3>{{ session('locale') == 'ar' ? $item->name : $item->name_en }}</h3>
                             <span>${{ $item->price }}</span>
                         </div>
                     </a>

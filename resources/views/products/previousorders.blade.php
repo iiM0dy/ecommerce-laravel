@@ -242,128 +242,136 @@
                 <div class="col-lg-12">
                     <div class="checkout-accordion-wrap">
                         <div class="accordion" id="accordionExample">
-                            @foreach ($orders as $order)
-                                <div class="card single-accordion">
-                                    <div class="card-header" id="heading{{ $order->id }}">
-                                        <h5 class="mb-0">
-                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
-                                                data-target="#collapse{{ $order->id }}" aria-expanded="false"
-                                                aria-controls="collapse{{ $order->id }}">
-                                                Order Number #{{ $order->id }}
-                                            </button>
-                                        </h5>
-                                    </div>
+                            @if ($orders->count() > 0)
+                                @foreach ($orders as $order)
+                                    <div class="card single-accordion">
+                                        <div class="card-header" id="heading{{ $order->id }}">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                                    data-target="#collapse{{ $order->id }}" aria-expanded="false"
+                                                    aria-controls="collapse{{ $order->id }}">
+                                                    {{ __('messages.order_number') }} #{{ $order->id }}
+                                                </button>
+                                            </h5>
+                                        </div>
 
-                                    <div id="collapse{{ $order->id }}" class="collapse"
-                                        aria-labelledby="heading{{ $order->id }}" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="billing-address-form mb-4">
-                                                <h5 class="mb-3">Billing Information</h5>
-                                                <form action="">
-                                                    <p><input type="text" value="{{ $order->name }}" readonly name="name"
-                                                            placeholder="Name"></p>
-                                                    <p><input type="email" value="{{ $order->email }}" readonly name="email"
-                                                            placeholder="Email"></p>
-                                                    <p><input type="text" value="{{ $order->address }}" readonly name="address"
-                                                            placeholder="Address"></p>
-                                                    <p><input type="tel" value="{{ $order->phone }}" readonly name="phone"
-                                                            placeholder="Phone"></p>
-                                                    <p>
-                                                        <textarea name="note" readonly cols="30" rows="5"
-                                                            placeholder="Note">{{ $order->note }}</textarea>
-                                                    </p>
-                                                </form>
-                                            </div>
+                                        <div id="collapse{{ $order->id }}" class="collapse"
+                                            aria-labelledby="heading{{ $order->id }}" data-parent="#accordionExample">
+                                            <div class="card-body">
+                                                <div class="billing-address-form mb-4">
+                                                    <h5 class="mb-3">{{ __('messages.billing_information') }}</h5>
+                                                    <form action="">
+                                                        <p><input type="text" value="{{ $order->name }}" readonly name="name"
+                                                                placeholder="{{ __('messages.name') }}"></p>
+                                                        <p><input type="email" value="{{ $order->email }}" readonly name="email"
+                                                                placeholder="{{ __('messages.email') }}"></p>
+                                                        <p><input type="text" value="{{ $order->address }}" readonly name="address"
+                                                                placeholder="{{ __('messages.address') }}"></p>
+                                                        <p><input type="tel" value="{{ $order->phone }}" readonly name="phone"
+                                                                placeholder="{{ __('messages.phone') }}"></p>
+                                                        <p><input type="tel" value="{{ $order->created_at }}" readonly
+                                                                name="created_at" placeholder="{{ __('messages.created_at') }}"></p>
+                                                        <p>
+                                                            <textarea name="note" readonly cols="30" rows="5"
+                                                                placeholder="{{ __('messages.note') }}">{{ $order->note }}</textarea>
+                                                        </p>
+                                                    </form>
+                                                </div>
 
-                                            <div class="row">
-                                                <div class="col-lg-8">
-                                                    <div class="card-details">
-                                                        <h5 class="mb-3">Order Items</h5>
-                                                        <div class="cart-card">
-                                                            <table class="cart-table">
+                                                <div class="row">
+                                                    <div class="col-lg-8">
+                                                        <div class="card-details">
+                                                            <h5 class="mb-3">{{ __('messages.order_items') }}</h5>
+                                                            <div class="cart-card">
+                                                                <table class="cart-table">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>{{ __('messages.product') }}</th>
+                                                                            <th>{{ __('messages.name') }}</th>
+                                                                            <th>{{ __('messages.price') }}</th>
+                                                                            <th>{{ __('messages.quantity') }}</th>
+                                                                            <th>{{ __('messages.total') }}</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @php
+                                                                            $orderTotal = 0;
+                                                                        @endphp
+                                                                        @foreach ($order->orderDetails as $detail)
+                                                                            @php
+                                                                                $lineTotal = $detail->product->price * $detail->quantity;
+                                                                                $orderTotal += $lineTotal;
+                                                                            @endphp
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <img src="{{ asset($detail->product->imagepath) }}"
+                                                                                        alt="">
+                                                                                </td>
+                                                                                <td class="product-name">
+                                                                                    <a
+                                                                                        href="/singleproduct/{{ $detail->product->id }}">{{ $detail->product->name }}</a>
+                                                                                </td>
+                                                                                <td class="product-price">
+                                                                                    ${{ number_format($detail->product->price, 2) }}
+                                                                                </td>
+                                                                                <td>
+                                                                                    <div class="qty-control">
+                                                                                        <span
+                                                                                            class="qty-number">{{ $detail->quantity }}</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="product-total">
+                                                                                    ${{ number_format($lineTotal, 2) }}
+                                                                                </td>
+                                                                            </tr>
+                                                                        @endforeach
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4">
+                                                        <div class="order-details-wrap">
+                                                            <table class="order-details">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>Product</th>
-                                                                        <th>Name</th>
-                                                                        <th>Price</th>
-                                                                        <th>Qty</th>
-                                                                        <th>Total</th>
+                                                                        <th>{{ __('messages.order_details') }}</th>
+                                                                        <th>{{ __('messages.price') }}</th>
                                                                     </tr>
                                                                 </thead>
-                                                                <tbody>
-                                                                    @php
-                                                                        $orderTotal = 0;
-                                                                    @endphp
+                                                                <tbody class="order-details-body">
+                                                                    <tr>
+                                                                        <td>{{ __('messages.product') }}</td>
+                                                                        <td>{{ __('messages.total') }}</td>
+                                                                    </tr>
                                                                     @foreach ($order->orderDetails as $detail)
-                                                                        @php
-                                                                            $lineTotal = $detail->product->price * $detail->quantity;
-                                                                            $orderTotal += $lineTotal;
-                                                                        @endphp
                                                                         <tr>
-                                                                            <td>
-                                                                                <img src="{{ asset($detail->product->imagepath) }}"
-                                                                                    alt="">
-                                                                            </td>
-                                                                            <td class="product-name">
-                                                                                <a
-                                                                                    href="/singleproduct/{{ $detail->product->id }}">{{ $detail->product->name }}</a>
-                                                                            </td>
-                                                                            <td class="product-price">
-                                                                                ${{ number_format($detail->product->price, 2) }}
-                                                                            </td>
-                                                                            <td>
-                                                                                <div class="qty-control">
-                                                                                    <span
-                                                                                        class="qty-number">{{ $detail->quantity }}</span>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="product-total">
-                                                                                ${{ number_format($lineTotal, 2) }}
+                                                                            <td>{{ $detail->product->name }}</td>
+                                                                            <td>${{ number_format($detail->product->price * $detail->quantity, 2) }}
                                                                             </td>
                                                                         </tr>
                                                                     @endforeach
+                                                                </tbody>
+                                                                <tbody class="checkout-details">
+                                                                    <tr>
+                                                                        <td>{{ __('messages.total') }}</td>
+                                                                        <td>${{ number_format($orderTotal, 2) }}</td>
+                                                                    </tr>
                                                                 </tbody>
                                                             </table>
                                                         </div>
                                                     </div>
                                                 </div>
-
-                                                <div class="col-lg-4">
-                                                    <div class="order-details-wrap">
-                                                        <table class="order-details">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Your order Details</th>
-                                                                    <th>Price</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody class="order-details-body">
-                                                                <tr>
-                                                                    <td>Product</td>
-                                                                    <td>Total</td>
-                                                                </tr>
-                                                                @foreach ($order->orderDetails as $detail)
-                                                                    <tr>
-                                                                        <td>{{ $detail->product->name }}</td>
-                                                                        <td>${{ number_format($detail->product->price * $detail->quantity, 2) }}
-                                                                        </td>
-                                                                    </tr>
-                                                                @endforeach
-                                                            </tbody>
-                                                            <tbody class="checkout-details">
-                                                                <tr>
-                                                                    <td>Total</td>
-                                                                    <td>${{ number_format($orderTotal, 2) }}</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                @endforeach
+                            @else
+                                <div class="alert alert-info text-center" role="alert">
+                                    <h3>You have no previous orders</h3>
                                 </div>
-                            @endforeach
+                            @endif
 
                         </div>
 

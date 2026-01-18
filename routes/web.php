@@ -285,13 +285,18 @@ Route::post('/storeorder', function (Request $request) {
 
 Route::get('/previousorders', function () {
     $user = auth()->user();
-    $cartItems = Cart::with('product')->where('user_id', $user)->get();
-    $cartProducts = Cart::where('user_id', $user)->get();
-    $orders = Order::with('orderDetails')->get();
+    $cartItems = Cart::with('product')->where('user_id', $user->id)->get();
+    $cartProducts = Cart::where('user_id', $user->id)->get();
+    $orders = Order::with('orderDetails')->where('user_id', $user->id)->get();
     $totalPrice = $cartProducts->sum(function ($item) {
         return $item->product->price * $item->quantity;
     });
     return view('products.previousorders', compact('orders', 'cartItems', 'cartProducts', 'totalPrice'));
 });
+
+Route::post('/lang/{locale}', function ($locale) {
+    session()->put('locale', $locale);
+    return back();
+})->name('changeLanguage');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -97,16 +97,16 @@
     <div class="auth-wrapper">
         <div class="auth-card">
 
-            <h2>Welcome Back</h2>
-            <p class="auth-subtitle">Login to continue</p>
+            <h2>{{ __('messages.welcome_back') }}</h2>
+            <p class="auth-subtitle">{{ __('messages.login_to_continue') }}</p>
 
             <form method="POST" action="{{ route('login') }}">
                 @csrf
 
                 <!-- Email -->
                 <div class="auth-group">
-                    <input type="email" name="email" placeholder="Email address" value="{{ old('email') }}" required
-                        autofocus>
+                    <input type="email" name="email" placeholder="{{ __('messages.email') }}" value="{{ old('email') }}"
+                        required autofocus>
                     @error('email')
                         <small class="auth-error">{{ $message }}</small>
                     @enderror
@@ -114,7 +114,7 @@
 
                 <!-- Password -->
                 <div class="auth-group">
-                    <input type="password" name="password" placeholder="Password" required>
+                    <input type="password" name="password" placeholder="{{ __('messages.password') }}" required>
                     @error('password')
                         <small class="auth-error">{{ $message }}</small>
                     @enderror
@@ -124,23 +124,23 @@
                 <div class="auth-options">
                     <label>
                         <input type="checkbox" name="remember">
-                        Remember me
+                        {{ __('messages.remember_me') }}
                     </label>
 
                     @if (Route::has('password.request'))
-                        <a href="{{ route('password.request') }}">Forgot password?</a>
+                        <a href="{{ route('password.request') }}">{{ __('messages.forgot_password') }}</a>
                     @endif
                 </div>
 
                 <!-- Button -->
                 <button type="submit" class="auth-btn">
-                    Login
+                    {{ __('messages.login') }}
                 </button>
 
                 <!-- Register -->
                 <p class="auth-footer">
-                    Don’t have an account?
-                    <a href="{{ route('register') }}">Create one</a>
+                    {{ __('messages.dont_have_account') }}
+                    <a href="{{ route('register') }}">{{ __('messages.create_one') }}</a>
                 </p>
 
             </form>

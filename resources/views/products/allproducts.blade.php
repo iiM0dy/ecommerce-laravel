@@ -197,8 +197,8 @@
             <div class="row">
                 <div class="col-lg-8 offset-lg-2 text-center">
                     <div class="section-title">
-                        <h3><span class="orange-text">Our</span> Products</h3>
-                        <p>Discover our latest products with premium quality and great prices.</p>
+                        <h3>{{ __('messages.allproducts') }}</h3>
+                        <p>{{ __('messages.allproductsdesc') }}</p>
                     </div>
                 </div>
             </div>
@@ -215,15 +215,15 @@
                             </div>
 
                             <div class="product-details">
-                                <h3>{{ $product->name }}</h3>
+                                <h3>{{ session('locale') == 'ar' ? $product->name : $product->name_en }}</h3>
 
                                 <p class="product-desc">
-                                    {{ Str::limit($product->description, 80) }}
+                                    {{ session('locale') == 'ar' ? Str::limit($product->description, 80) : Str::limit($product->description_en, 80) }}
                                 </p>
 
                                 <div class="product-meta">
                                     <span class="product-price">${{ $product->price }}</span>
-                                    <span class="product-qty">{{ $product->quantity }} in stock</span>
+                                    <span class="product-qty">{{ $product->quantity }} {{ __('messages.instock') }}</span>
                                 </div>
 
                                 <!-- Action buttons centered -->
@@ -234,10 +234,13 @@
 
                                     <!-- Edit and Delete buttons on the right -->
                                     <div class="edit-delete-group" style="display: flex; gap: 10px; ">
-                                        <a href="{{ url('/editproduct/' . $product->id) }}" class="edit-btn">Edit</a>
-                                        <a href="/deleteproduct/{{ $product->id }}" class="delete-btn">Delete</a>
+                                        <a href="{{ url('/editproduct/' . $product->id) }}"
+                                            class="edit-btn">{{ __('messages.edit') }}</a>
+                                        <a href="/deleteproduct/{{ $product->id }}"
+                                            class="delete-btn">{{ __('messages.delete') }}</a>
                                     </div>
-                                    <a href="/addproducttocart/{{ $product->id }}" class="cart-btn">Add to Cart</a>
+                                    <a href="/addproducttocart/{{ $product->id }}"
+                                        class="cart-btn">{{ __('messages.addtocart') }}</a>
                                 </div>
 
 

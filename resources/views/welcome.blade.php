@@ -110,8 +110,8 @@
             <div class="row">
                 <div class="col-lg-8 offset-lg-2 text-center">
                     <div class="section-title">
-                        <h3><span class="orange-text">Our</span> Categories</h3>
-                        <p>Explore products by categories and find what you need quickly</p>
+                        <h3>{{ __('messages.categories') }}</h3>
+                        <p>{{ __('messages.categoriesdesc') }}</p>
                     </div>
                 </div>
             </div>
@@ -123,7 +123,7 @@
                             <div class="category-image-wrapper">
                                 <img src="{{ asset($category->imagepath) }}" alt="{{ $category->name }}">
                                 <div class="category-overlay">
-                                    <h3>{{ $category->name }}</h3>
+                                    <h3>{{ session('locale') == 'ar' ? $category->name : $category->name_en }}</h3>
                                 </div>
                             </div>
                         </a>
@@ -224,7 +224,7 @@
         }
     </style>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $(".testimonial-sliders").owlCarousel({
                 items: 1,
                 loop: true,

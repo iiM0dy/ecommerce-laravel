@@ -100,26 +100,26 @@
 @section('content')
     <div class="contact-wrapper">
 
-        <h2 class="form-title">Add Review</h2>
+        <h2 class="form-title">{{ __('messages.add_review') }}</h2>
 
         <form class="contact-form" method="POST" action="{{ url('/storereview') }}">
             @csrf
 
             <div class="form-row">
-                <input type="text" name="name" placeholder="Your Name">
-                <input type="email" name="email" placeholder="Email Address">
+                <input type="text" name="name" placeholder="{{ __('messages.full_name') }}">
+                <input type="email" name="email" placeholder="{{ __('messages.email') }}">
             </div>
             <div class="form-row">
-                <input type="text" name="phone" placeholder="Phone Number">
-                <input type="text" name="subject" placeholder="Subject">
+                <input type="text" name="phone" placeholder="{{ __('messages.phone') }}">
+                <input type="text" name="subject" placeholder="{{ __('messages.subject') }}">
             </div>
 
             <div class="form-row full">
-                <textarea name="review" placeholder="Enter your review"></textarea>
+                <textarea name="review" placeholder="{{ __('messages.review') }}"></textarea>
             </div>
 
             <div class="form-actions">
-                <button type="submit">Add Review</button>
+                <button type="submit">{{ __('messages.add_review') }}</button>
             </div>
 
         </form>

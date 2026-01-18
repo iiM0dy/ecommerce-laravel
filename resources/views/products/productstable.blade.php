@@ -111,24 +111,26 @@
 
 @section('content')
     <div class="container my-5">
-        <a href="/addproduct" class="btn-edit"><i class="fas fa-plus"></i> Add Product</a>
+        <a href="/addproduct" class="btn-edit"><i class="fas fa-plus"></i> {{ __('messages.add_product') }}</a>
         <div class="table-wrapper">
             <table id="myTable" class="custom-table display">
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Product</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Image</th>
-                        <th class="text-center">Actions</th>
+                        <th>{{ __('messages.product') }}</th>
+                        <th>{{ __('messages.price') }}</th>
+                        <th>{{ __('messages.quantity') }}</th>
+                        <th>{{ __('messages.image') }}</th>
+                        <th class="text-center">{{ __('messages.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($products as $product)
                         <tr>
                             <td>{{ $product->id }}</td>
-                            <td><strong>{{ $product->name }}</strong></td>
+                            <td><a
+                                    href="/singleproduct/{{ $product->id }}"><strong>{{ session('locale') == 'ar' ? $product->name : $product->name_en }}</strong></a>
+                            </td>
                             <td>${{ number_format($product->price, 2) }}</td>
                             <td>
                                 <span class="qty-badge">{{ $product->quantity }}</span>
@@ -138,12 +140,13 @@
                             </td>
                             <td>
                                 <div class="action-buttons">
-                                    <a href="/editproduct/{{ $product->id }}" class="btn-edit">Edit</a>
+                                    <a href="/editproduct/{{ $product->id }}" class="btn-edit">{{ __('messages.edit') }}</a>
                                     <a href="/deleteproduct/{{ $product->id }}" class="btn-delete"
-                                        onclick="return confirm('Are you sure you want to delete this product?')">
-                                        Delete
+                                        onclick="return confirm('{{ __('messages.are_you_sure_delete') }}')">
+                                        {{ __('messages.delete') }}
                                     </a>
-                                    <a href="/addproductimage/{{ $product->id }}" class="btn-edit">Add Image</a>
+                                    <a href="/addproductimage/{{ $product->id }}"
+                                        class="btn-edit">{{ __('messages.add_image') }}</a>
                                 </div>
                             </td>
                         </tr>
@@ -156,7 +159,7 @@
 
 @push('scripts')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#myTable').DataTable({
                 pageLength: 6,
                 lengthChange: true,

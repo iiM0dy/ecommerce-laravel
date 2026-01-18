@@ -67,12 +67,12 @@
                         <!-- menu start -->
                         <nav class="main-menu">
                             <ul>
-                                <li class="current-list-item"><a href="/">Home</a>
+                                <li class="current-list-item"><a href="/">{{ __('messages.home') }}</a>
                                 </li>
-                                <li><a href="/categories">Categories</a></li>
-                                <li><a href="/products">Products</a></li>
-                                <li><a href="/addproduct">Add Products</a></li>
-                                <li><a href="/addreview">Add Review</a></li>
+                                <li><a href="/categories">{{ __('messages.categories') }}</a></li>
+                                <li><a href="/products">{{ __('messages.products') }}</a></li>
+                                <li><a href="/addproduct">{{ __('messages.add_product') }}</a></li>
+                                <li><a href="/addreview">{{ __('messages.add_review') }}</a></li>
                                 <style>
                                     .user-dropdown {
                                         position: relative;
@@ -160,13 +160,13 @@
                                 @guest
                                     @if (Route::has('login'))
                                         <li>
-                                            <a href="{{ route('login') }}">Login</a>
+                                            <a href="{{ route('login') }}">{{ __('messages.login') }}</a>
                                         </li>
                                     @endif
 
                                     @if (Route::has('register'))
                                         <li>
-                                            <a href="{{ route('register') }}">Register</a>
+                                            <a href="{{ route('register') }}">{{ __('messages.register') }}</a>
                                         </li>
                                     @endif
                                 @else
@@ -180,7 +180,7 @@
                                             <li>
                                                 <a href="{{ route('logout') }}"
                                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                                    Logout
+                                                    {{ __('messages.logout') }}
                                                 </a>
                                             </li>
                                         </ul>
@@ -244,6 +244,15 @@
 
     <div style="height: 100px"></div>
     <!-- product section -->
+    {{ __('messages.cart') }}
+    <form action="{{ route('changeLanguage', 'en') }}" method="post">
+        @csrf
+        <button type="submit">en</button>
+    </form>
+    <form action="{{ route('changeLanguage', 'ar') }}" method="post">
+        @csrf
+        <button type="submit">ar</button>
+    </form>
     @yield('content')
     <!-- end product section -->
 
@@ -339,18 +348,18 @@
     <script src="{{ asset('assets/js/main.js') }}"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const toggle = document.getElementById('userToggle');
             const menu = document.getElementById('userMenu');
 
             if (!toggle || !menu) return;
 
-            toggle.addEventListener('click', function(e) {
+            toggle.addEventListener('click', function (e) {
                 e.stopPropagation();
                 menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
             });
 
-            document.addEventListener('click', function() {
+            document.addEventListener('click', function () {
                 menu.style.display = 'none';
             });
         });
