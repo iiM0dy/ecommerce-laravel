@@ -255,7 +255,7 @@
                 @foreach ($reviews as $review)
                     <div class="single-testimonial-slider">
                         <div class="client-avatar">
-                            <img src="assets/img/avaters/avatar1.png" alt="{{ $review->name }}">
+                            <img src="assets/img/avaters/avatar2.png" alt="{{ $review->name }}">
                         </div>
                         <div class="client-meta">
                             <h3>{{ $review->name }} <span>{{ $review->subject }}</span></h3>
