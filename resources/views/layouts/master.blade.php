@@ -73,6 +73,7 @@
                                 <li><a href="/products">{{ __('messages.products') }}</a></li>
                                 <li><a href="/addproduct">{{ __('messages.add_product') }}</a></li>
                                 <li><a href="/addreview">{{ __('messages.add_review') }}</a></li>
+
                                 <style>
                                     .user-dropdown {
                                         position: relative;
@@ -191,7 +192,24 @@
                                         </form>
                                     </li>
                                 @endguest
-
+                                <li>
+                                    <div class="language-dropdown">
+                                        <form id="lang-form" method="POST">
+                                            @csrf
+                                            <select onchange="changeLanguage(this.value)">
+                                                <option value="" disabled selected>
+                                                    {{ app()->getLocale() === 'ar' ? 'اللغة' : 'Language' }}
+                                                </option>
+                                                <option value="en" {{ app()->getLocale() === 'en' ? 'selected' : '' }}>
+                                                    English
+                                                </option>
+                                                <option value="ar" {{ app()->getLocale() === 'ar' ? 'selected' : '' }}>
+                                                    العربية
+                                                </option>
+                                            </select>
+                                        </form>
+                                    </div>
+                                </li>
 
                                 <li>
                                     <div class="header-icons">
@@ -244,15 +262,70 @@
 
     <div style="height: 100px"></div>
     <!-- product section -->
-    {{ __('messages.cart') }}
-    <form action="{{ route('changeLanguage', 'en') }}" method="post">
-        @csrf
-        <button type="submit">en</button>
-    </form>
-    <form action="{{ route('changeLanguage', 'ar') }}" method="post">
-        @csrf
-        <button type="submit">ar</button>
-    </form>
+    <script>
+        function changeLanguage(lang) {
+            const form = document.getElementById('lang-form');
+            form.action = `/lang/${lang}`;
+            form.submit();
+        }
+    </script>
+    <style>
+        .language-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .language-dropdown select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+
+            padding: 8px 36px 8px 14px;
+            font-size: 14px;
+            font-weight: 500;
+
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+
+            background-color: #ffffff;
+            color: #111827;
+
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        /* Hover */
+        .language-dropdown select:hover {
+            border-color: #3b82f6;
+        }
+
+        /* Focus */
+        .language-dropdown select:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        }
+
+        /* Arrow */
+        .language-dropdown::after {
+            content: "▾";
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        /* Dark mode (optional) */
+        body.dark .language-dropdown select {
+            background-color: #1f2933;
+            color: #f9fafb;
+            border-color: #374151;
+        }
+    </style>
+
     @yield('content')
     <!-- end product section -->
 
